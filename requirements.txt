@@ -1,3 +1,4 @@
-flask
-gunicorn
-reportlab
+Flask==2.3.3
+reportlab==4.0.4
+gunicorn==21.2.0
+web: gunicorn app:app
