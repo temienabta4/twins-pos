@@ -1,0 +1,78 @@
+
+{% extends 'base.html' %}
+{% block title %}Twins - Staff Management{% endblock %}
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left Column: Add Employees -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
+        <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-user-plus text-orange-500 mr-2"></i>Register Staff Member</h2>
+        <form action="{{ url_for('add_staff') }}" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Full Name</label>
+                <input type="text" name="name" required placeholder="Employee Name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Assigned Role</label>
+                <select name="role" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-sm">
+                    <option value="Cashier">Cashier</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Supervisor">Supervisor</option>
+                    <option value="Sales Agent">Sales Agent</option>
+                </select>
+            </div>
+            <div class="pt-2">
+                <button type="submit" class="w-full bg-orange-500 text-white font-bold py-2.5 px-4 rounded-md hover:bg-orange-600 transition text-sm">
+                    Add to Roster
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Right Column: Staff Roster Table -->
+    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <h2 class="text-lg font-bold text-slate-800 mb-6 flex items-center"><i class="fa-solid fa-address-book text-amber-500 mr-2"></i>Active Employee Directory</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+                <thead>
+                    <tr class="bg-slate-100 border-b border-slate-200 text-slate-600 font-semibold uppercase text-[10px] tracking-wider">
+                        <th class="py-3 px-4">Staff ID</th>
+                        <th class="py-3 px-4">Employee Name</th>
+                        <th class="py-3 px-4">Assigned Role</th>
+                        <th class="py-3 px-4 text-center">POS Terminal Access</th>
+                        <th class="py-3 px-4 text-right">Terminate Profile</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700">
+                    {% if staff_members %}
+                        {% for emp in staff_members %}
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="py-3 px-4 text-slate-400">#EMP-00{{ emp.id }}</td>
+                            <td class="py-3 px-4 font-bold text-slate-800">{{ emp.name }}</td>
+                            <td class="py-3 px-4">
+                                <span class="bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded text-[10px]">
+                                    {{ emp.role }}
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="bg-green-100 text-green-700 font-bold px-2 py-0.5 rounded text-[10px]">
+                                    Active Cashier
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <a href="{{ url_for('delete_staff', emp_id=emp.id) }}" class="text-red-500 hover:text-red-700 text-sm" onclick="return confirm('Remove employee from roster database?')">
+                                    <i class="fa-solid fa-trash-can"></i> Remove
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="py-12 text-center text-slate-400">Roster database is empty. Register employees on the left.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
