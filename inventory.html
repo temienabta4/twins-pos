@@ -1,94 +1,95 @@
 
-{% extends 'base.html' %}
-{% block title %}Twins - Inventory Desk{% endblock %}
-{% block content %}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Left Panel: Create & Edit Catalog Items -->
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
-        <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
-            {% if edit_product %}<i class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i>Edit Menu Details{% else %}<i class="fa-solid fa-circle-plus text-orange-500 mr-2"></i>Register New Menu Item{% endif %}
-        </h2>
-        <form action="{% if edit_product %}{{ url_for('edit_product', pid=edit_product.id) }}{% else %}{{ url_for('add_product') }}{% endif %}" method="POST" class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Product/Juice Name</label>
-                <input type="text" name="name" required value="{{ edit_product.name if edit_product else '' }}" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Standard Sales Price ($)</label>
-                <input type="number" step="0.01" name="price" required value="{{ edit_product.price if edit_product else '' }}" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
-            </div>
-            {% if not edit_product %}
-            <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Initial Inventory Balance</label>
-                <input type="number" name="stock" required min="0" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm" value="0">
-            </div>
-            {% endif %}
-            <div class="pt-2">
-                <button type="submit" class="w-full bg-orange-500 text-white font-bold py-2.5 px-4 rounded-md hover:bg-orange-600 transition text-sm">
-                    {% if edit_product %}Save Details{% else %}Add to Menu Catalog{% endif %}
-                </button>
-                {% if edit_product %}
-                    <a href="{{ url_for('inventory') }}" class="block text-center text-slate-500 mt-2 hover:underline text-xs font-semibold">Cancel and Exit</a>
+    {% extends 'base.html' %}
+    {% block title %}Twins - Inventory Desk{% endblock %}
+    {% block content %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Panel: Create & Edit Catalog Items -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
+            <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                {% if edit_product %}<i class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i>Edit Menu Details{% else %}<i class="fa-solid fa-circle-plus text-orange-500 mr-2"></i>Register New Menu Item{% endif %}
+            </h2>
+            <form action="{% if edit_product %}{{ url_for('edit_product', pid=edit_product.id) }}{% else %}{{ url_for('add_product') }}{% endif %}" method="POST" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Product/Juice Name</label>
+                    <input type="text" name="name" required value="{{ edit_product.name if edit_product else '' }}" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Standard Sales Price ($)</label>
+                    <input type="number" step="0.01" name="price" required value="{{ edit_product.price if edit_product else '' }}" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+                </div>
+                {% if not edit_product %}
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Initial Inventory Balance</label>
+                    <input type="number" name="stock" required min="0" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm" value="0">
+                </div>
                 {% endif %}
-            </div>
-        </form>
-    </div>
-
-    <!-- Right Panel: Inventory Table & Audit Operations -->
-    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <h2 class="text-lg font-bold text-slate-800 flex items-center"><i class="fa-solid fa-boxes-stacked text-amber-500 mr-2"></i>Stock Register & Adjustment Desk</h2>
-            <form action="{{ url_for('inventory') }}" method="GET" class="flex max-w-xs w-full">
-                <input type="text" name="search" placeholder="Search menu catalog..." value="{{ search_query }}" class="w-full px-3 py-1.5 border border-r-0 rounded-l-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs">
-                <button type="submit" class="bg-orange-500 text-white px-3 py-1.5 rounded-r-md hover:bg-orange-600 transition text-xs"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-orange-500 text-white font-bold py-2.5 px-4 rounded-md hover:bg-orange-600 transition text-sm">
+                        {% if edit_product %}Save Details{% else %}Add to Menu Catalog{% endif %}
+                    </button>
+                    {% if edit_product %}
+                        <a href="{{ url_for('inventory') }}" class="block text-center text-slate-500 mt-2 hover:underline text-xs font-semibold">Cancel and Exit</a>
+                    {% endif %}
+                </div>
             </form>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-                <thead>
-                    <tr class="bg-slate-100 border-b border-slate-200 text-slate-600 font-semibold uppercase text-[10px] tracking-wider">
-                        <th class="py-3 px-4">Catalog ID</th>
-                        <th class="py-3 px-4">Item Name</th>
-                        <th class="py-3 px-4">Price</th>
-                        <th class="py-3 px-4">Current Stock</th>
-                        <th class="py-3 px-4 text-center">Stock Operations (In/Out)</th>
-                        <th class="py-3 px-4 text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-slate-700">
-                    {% if products %}
-                        {% for item in products %}
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="py-3 px-4 text-slate-400">#00{{ item.id }}</td>
-                            <td class="py-3 px-4 font-bold text-slate-800">{{ item.name }}</td>
-                            <td class="py-3 px-4 font-semibold">${{ "%.2f"|format(item.price) }}</td>
-                            <td class="py-3 px-4">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold {% if item.stock <= 10 %}bg-red-100 text-red-600{% else %}bg-green-100 text-green-600{% endif %}">
-                                    {{ item.stock }} units
-                                </span>
-                            </td>
-                            <td class="py-3 px-4">
-                                <form action="{{ url_for('adjust_stock', pid=item.id) }}" method="POST" class="flex justify-center items-center space-x-1.5">
-                                    <input type="number" name="quantity" required min="1" value="1" class="w-12 text-center border rounded py-1 text-xs font-bold focus:ring-1 focus:ring-orange-500">
-                                    <button type="submit" name="direction" value="in" class="bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 text-[10px] font-bold rounded" title="Restock In">Stock IN</button>
-                                    <button type="submit" name="direction" value="out" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 text-[10px] font-bold rounded" title="Deduct Out">Stock OUT</button>
-                                </form>
-                            </td>
-                            <td class="py-3 px-4 text-right space-x-2">
-                                <a href="{{ url_for('inventory', edit=item.id) }}" class="text-blue-500 hover:text-blue-700 text-sm" title="Edit Catalog Entry"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a href="{{ url_for('delete_product', pid=item.id) }}" class="text-red-500 hover:text-red-700 text-sm" onclick="return confirm('Permanently drop this item from the catalog?')" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
-                            </td>
+        <!-- Right Panel: Inventory Table & Audit Operations -->
+        <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                <h2 class="text-lg font-bold text-slate-800 flex items-center"><i class="fa-solid fa-boxes-stacked text-amber-500 mr-2"></i>Stock Register & Adjustment Desk</h2>
+                <form action="{{ url_for('inventory') }}" method="GET" class="flex max-w-xs w-full">
+                    <input type="text" name="search" placeholder="Search menu catalog..." value="{{ search_query }}" class="w-full px-3 py-1.5 border border-r-0 rounded-l-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs">
+                    <button type="submit" class="bg-orange-500 text-white px-3 py-1.5 rounded-r-md hover:bg-orange-600 transition text-xs"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-slate-200 text-slate-600 font-semibold uppercase text-[10px] tracking-wider">
+                            <th class="py-3 px-4">Catalog ID</th>
+                            <th class="py-3 px-4">Item Name</th>
+                            <th class="py-3 px-4">Price</th>
+                            <th class="py-3 px-4">Current Stock</th>
+                            <th class="py-3 px-4 text-center">Stock Operations (In/Out)</th>
+                            <th class="py-3 px-4 text-right">Actions</th>
                         </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="6" class="py-12 text-center text-slate-400">No items registered in catalog.</td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        {% if products %}
+                            {% for item in products %}
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-3 px-4 text-slate-400">#00{{ item.id }}</td>
+                                <td class="py-3 px-4 font-bold text-slate-800">{{ item.name }}</td>
+                                <td class="py-3 px-4 font-semibold">${{ "%.2f"|format(item.price) }}</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold {% if item.stock <= 10 %}bg-red-100 text-red-600{% else %}bg-green-100 text-green-600{% endif %}">
+                                        {{ item.stock }} units
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <form action="{{ url_for('adjust_stock', pid=item.id) }}" method="POST" class="flex justify-center items-center space-x-1.5">
+                                        <input type="number" name="quantity" required min="1" value="1" class="w-12 text-center border rounded py-1 text-xs font-bold focus:ring-1 focus:ring-orange-500">
+                                        <button type="submit" name="direction" value="in" class="bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 text-[10px] font-bold rounded" title="Restock In">Stock IN</button>
+                                        <button type="submit" name="direction" value="out" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 text-[10px] font-bold rounded" title="Deduct Out">Stock OUT</button>
+                                    </form>
+                                </td>
+                                <td class="py-3 px-4 text-right space-x-2">
+                                    <a href="{{ url_for('inventory', edit=item.id) }}" class="text-blue-500 hover:text-blue-700 text-sm" title="Edit Catalog Entry"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a href="{{ url_for('delete_product', pid=item.id) }}" class="text-red-500 hover:text-red-700 text-sm" onclick="return confirm('Permanently drop this item from the catalog?')" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="py-12 text-center text-slate-400">No items registered in catalog.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}
+    

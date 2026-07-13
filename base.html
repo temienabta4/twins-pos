@@ -1,42 +1,43 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Twins POS{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body class="bg-slate-50 min-h-screen flex flex-col font-sans">
-    <nav class="bg-gradient-to-r from-orange-600 to-amber-500 shadow-md text-white">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center space-x-3">
-                <i class="fa-solid font-bold text-2xl fa-burger animate-bounce text-yellow-300"></i>
-                <span class="text-xl font-extrabold tracking-wide">TWINS JUICE & BURGER</span>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Twins POS{% endblock %}</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    </head>
+    <body class="bg-slate-50 min-h-screen flex flex-col font-sans">
+        <nav class="bg-gradient-to-r from-orange-600 to-amber-500 shadow-md text-white">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid font-bold text-2xl fa-burger animate-bounce text-yellow-300"></i>
+                    <span class="text-xl font-extrabold tracking-wide">TWINS JUICE & BURGER</span>
+                </div>
+                <div class="flex space-x-6 text-sm font-semibold">
+                    <a href="{{ url_for('billing') }}" class="hover:text-yellow-200 transition"><i class="fa-solid fa-cash-register mr-1"></i> POS Billing</a>
+                    <a href="{{ url_for('inventory') }}" class="hover:text-yellow-200 transition"><i class="fa-solid fa-boxes-stacked mr-1"></i> Inventory</a>
+                    <a href="{{ url_for('staff') }}" class="hover:text-yellow-200 transition"><i class="fa-solid fa-users mr-1"></i> Staff Roster</a>
+                </div>
             </div>
-            <div class="flex space-x-6 text-sm font-semibold">
-                <a href="{{ url_for('billing') }}" class="hover:text-yellow-200 transition"><i class="fa-solid fa-cash-register mr-1"></i> POS Billing</a>
-                <a href="{{ url_for('inventory') }}" class="hover:text-yellow-200 transition"><i class="fa-solid fa-boxes-stacked mr-1"></i> Inventory</a>
-                <a href="{{ url_for('staff') }}" class="hover:text-yellow-200 transition"><i class="fa-solid fa-users mr-1"></i> Staff Roster</a>
-            </div>
-        </div>
-    </nav>
-    <main class="flex-grow max-w-7xl w-full mx-auto p-6">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, msg in messages %}
-                    <div class="mb-4 p-4 rounded-lg border shadow-sm {% if category == 'error' %}bg-red-50 border-red-200 text-red-700{% else %}bg-green-50 border-green-200 text-green-700{% endif %} flex justify-between items-center">
-                        <span class="font-medium"><i class="fa-solid {% if category == 'error' %}fa-circle-xmark{% else %}fa-circle-check{% endif %} mr-2"></i>{{ msg }}</span>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </main>
-    <footer class="bg-slate-800 text-slate-400 py-6 text-center text-sm border-t border-slate-700">
-        <div class="mb-2 font-semibold text-slate-300">📍 Addis Abeba, Lafto | 📞 0911255011</div>
-        <div class="text-xs">&copy; 2026 Twins Juice & Burger Supermarket. All rights reserved.</div>
-    </footer>
-</body>
-</html>
+        </nav>
+        <main class="flex-grow max-w-7xl w-full mx-auto p-6">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, msg in messages %}
+                        <div class="mb-4 p-4 rounded-lg border shadow-sm {% if category == 'error' %}bg-red-50 border-red-200 text-red-700{% else %}bg-green-50 border-green-200 text-green-700{% endif %} flex justify-between items-center">
+                            <span class="font-medium"><i class="fa-solid {% if category == 'error' %}fa-circle-xmark{% else %}fa-circle-check{% endif %} mr-2"></i>{{ msg }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </main>
+        <footer class="bg-slate-800 text-slate-400 py-6 text-center text-sm border-t border-slate-700">
+            <div class="mb-2 font-semibold text-slate-300">📍 Addis Abeba, Lafto | 📞 0911255011</div>
+            <div class="text-xs">&copy; 2026 Twins Juice & Burger Supermarket. All rights reserved.</div>
+        </footer>
+    </body>
+    </html>
+    
